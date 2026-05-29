@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ScamSlayer</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_recordings">Recordings</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Home Screen -->
+    <string name="home_title">ScamSlayer</string>
+    <string name="home_status_active">Active</string>
+    <string name="home_status_ready">Ready</string>
+    <string name="forward_all_calls">Forward All Calls</string>
+    <string name="forward_all_calls_desc">Show overlay for every incoming call</string>
+    <string name="select_persona">Select Persona</string>
+    <string name="recent_recordings">Recent Recordings</string>
+    <string name="no_persona_selected">No persona selected</string>
+    <string name="current_persona">Current Persona</string>
+
+    <!-- Recordings Screen -->
+    <string name="recordings_title">Recordings</string>
+    <string name="no_recordings">No recordings yet</string>
+    <string name="unknown_caller">Unknown</string>
+    <string name="delete_recording">Delete</string>
+    <string name="share_recording">Share</string>
+    <string name="share_transcript">Share Transcript</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="transcript_label">Transcript</string>
+    <string name="duration_format">%d:%02d</string>
+    <string name="confirm_delete_title">Delete Recording</string>
+    <string name="confirm_delete_message">Are you sure you want to delete this recording?</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Settings</string>
+    <string name="backend_url">Backend Server URL</string>
+    <string name="backend_url_hint">http://10.0.2.2:8000</string>
+    <string name="twilio_number">Twilio Forwarding Number</string>
+    <string name="twilio_number_hint">+1234567890</string>
+    <string name="show_on_all_calls">Show on All Calls</string>
+    <string name="show_on_all_calls_desc">Display overlay for every incoming call, not just detected spam</string>
+    <string name="default_persona">Default Persona</string>
+    <string name="call_forwarding_setup">Call Forwarding Setup</string>
+    <string name="call_forwarding_instructions">To use ScamSlayer, set up conditional call forwarding on your phone:\n\n1. Open your Phone app\n2. Go to Settings > Call Forwarding\n3. Set \"Forward when busy\" to your Twilio number\n4. Set \"Forward when unanswered\" to your Twilio number\n\nWhen ScamSlayer rejects a spam call, your carrier will automatically forward it to the AI.</string>
+    <string name="about">About</string>
+    <string name="about_text">ScamSlayer v1.0\n\nAI-powered spam call handler. Forward spam calls to an AI that talks with the caller, then listen to the recording.</string>
+    <string name="save">Save</string>
+    <string name="saved">Settings saved</string>
+
+    <!-- Overlay -->
+    <string name="overlay_title">Incoming Call</string>
+    <string name="forward_to_ai">Forward to AI</string>
+    <string name="dismiss_overlay">Dismiss</string>
+    <string name="persona_prefix">Persona: %s</string>
+    <string name="overlay_ai_active">AI is handling the call</string>
+    <string name="overlay_tap_to_end">Tap to end</string>
+
+    <!-- Notifications -->
+    <string name="notification_channel_name">ScamSlayer Call Handling</string>
+    <string name="notification_channel_desc">Notifications for active call handling</string>
+    <string name="notification_title">ScamSlayer Active</string>
+    <string name="notification_text">Monitoring incoming call from %s</string>
+    <string name="notification_action_forward">Forward to AI</string>
+    <string name="notification_action_dismiss">Dismiss</string>
+
+    <!-- Audio Bridge Notifications -->
+    <string name="bridge_notification_title">ScamSlayer AI Active</string>
+    <string name="bridge_notification_text">AI is talking to the caller</string>
+    <string name="bridge_notification_stop">End Call</string>
+
+    <!-- Permissions -->
+    <string name="permissions_title">Permissions Required</string>
+    <string name="permissions_message">ScamSlayer needs the following permissions to work:\n\n- Phone state: detect incoming calls\n- Call log: identify callers\n- Overlay: show the forward button\n- Notifications: alert you about calls</string>
+    <string name="grant_permissions">Grant Permissions</string>
+
+    <!-- Errors -->
+    <string name="error_loading_personas">Failed to load personas</string>
+    <string name="error_loading_recordings">Failed to load recordings</string>
+    <string name="error_initiating_call">Failed to initiate AI call</string>
+    <string name="error_network">Network error. Check your backend URL in settings.</string>
+</resources>
