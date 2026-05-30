@@ -460,20 +460,6 @@ fun EditPersonaScreen(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Test call button
-                Button(
-                    onClick = { viewModel.testCallPersona(personaId) },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = ScamOrange
-                    ),
-                    shape = RoundedCornerShape(12.dp)
-                ) {
-                    Icon(Icons.Default.Call, contentDescription = null, modifier = Modifier.size(18.dp))
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("Zavolat a otestovat")
-                }
-
                 Spacer(modifier = Modifier.height(8.dp))
 
                 // Delete button
