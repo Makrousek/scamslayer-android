@@ -317,6 +317,28 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun testCallPersona(personaId: String) {
+        viewModelScope.launch {
+            try {
+                val url = settingsRepository.getBackendUrlSync()
+                val userNumber = settingsRepository.getUserPhoneNumberSync()
+                ApiClient.getService(url).prepareBridgeCall(
+                    mapOf("persona_id" to personaId, "user_number" to userNumber)
+                )
+                val twilioNumber = settingsRepository.getTwilioForwardNumberSync()
+                val context = getApplication<Application>()
+                context.startActivity(Intent(Intent.ACTION_DIAL).apply {
+                    data = Uri.parse("tel:$twilioNumber")
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                })
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    snackbarMessage = "Nepodařilo se připravit testovací hovor: ${e.message}"
+                )
+            }
+        }
+    }
+
     fun setShowOnAllCalls(show: Boolean) {
         viewModelScope.launch {
             settingsRepository.setShowOnAllCalls(show)
