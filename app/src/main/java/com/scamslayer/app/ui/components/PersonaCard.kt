@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Person
@@ -60,6 +61,7 @@ fun PersonaCard(
     onStopPreview: () -> Unit,
     onDelete: (() -> Unit)? = null,
     onEditPortrait: (() -> Unit)? = null,
+    onTestCall: (() -> Unit)? = null,
     portraitUrl: String? = null,
     modifier: Modifier = Modifier
 ) {
@@ -142,6 +144,18 @@ fun PersonaCard(
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
+            }
+
+            // Test call button
+            if (onTestCall != null) {
+                IconButton(onClick = onTestCall) {
+                    Icon(
+                        imageVector = Icons.Default.Call,
+                        contentDescription = "Test call",
+                        tint = ScamOrange,
+                        modifier = Modifier.size(22.dp)
+                    )
+                }
             }
 
             // Voice preview button

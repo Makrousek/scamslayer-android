@@ -294,6 +294,7 @@ fun HomeScreen(
                             { personaToDelete = persona.id }
                         } else null,
                         onEditPortrait = { onEditPersona(persona.id) },
+                        onTestCall = { viewModel.testCallPersona(persona.id) },
                         portraitUrl = persona.portraitUrl?.let { viewModel.getFullUrl(it) }
                     )
                 }
