@@ -17,6 +17,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Call
+import androidx.compose.material3.IconButton
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material3.AlertDialog
@@ -175,7 +177,7 @@ fun HomeScreen(
                         }
                     }
                     Spacer(modifier = Modifier.width(16.dp))
-                    Column {
+                    Column(modifier = Modifier.weight(1f)) {
                         Text(
                             text = "Aktivní persona",
                             style = MaterialTheme.typography.bodySmall,
@@ -192,6 +194,18 @@ fun HomeScreen(
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 maxLines = 1
+                            )
+                        }
+                    }
+                    if (currentPersona != null) {
+                        IconButton(
+                            onClick = { viewModel.testCallPersona(selectedPersonaId) }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Call,
+                                contentDescription = "Test call",
+                                tint = ScamOrange,
+                                modifier = Modifier.size(24.dp)
                             )
                         }
                     }
@@ -294,7 +308,6 @@ fun HomeScreen(
                             { personaToDelete = persona.id }
                         } else null,
                         onEditPortrait = { onEditPersona(persona.id) },
-                        onTestCall = { viewModel.testCallPersona(persona.id) },
                         portraitUrl = persona.portraitUrl?.let { viewModel.getFullUrl(it) }
                     )
                 }
