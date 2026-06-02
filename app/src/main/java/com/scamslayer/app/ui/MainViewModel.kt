@@ -616,12 +616,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             try {
                 val url = settingsRepository.getBackendUrlSync()
                 val userNumber = settingsRepository.getUserPhoneNumberSync()
+                val lang = _personaLanguage.value.ifEmpty { java.util.Locale.getDefault().language }
                 val result = ApiClient.getService(url).generatePersona(
                     mapOf(
                         "description" to description,
                         "age" to age,
                         "gender" to gender,
-                        "user_number" to userNumber
+                        "user_number" to userNumber,
+                        "language" to lang
                     )
                 )
                 _uiState.value = _uiState.value.copy(isGeneratingPersona = false)
