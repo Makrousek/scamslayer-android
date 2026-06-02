@@ -121,7 +121,7 @@ fun HomeScreen(
                         ) {}
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = if (showOnAllCalls) "Přesměrování aktivní" else "Připraveno",
+                            text = if (showOnAllCalls) (if (L.s.lang == "en") "Forwarding active" else "Přesměrování aktivní") else (if (L.s.lang == "en") "Ready" else "Připraveno"),
                             style = MaterialTheme.typography.titleMedium,
                             color = if (isActive) StatusActive else StatusInactive
                         )
@@ -347,7 +347,7 @@ fun HomeScreen(
         val personaName = uiState.personas.find { it.id == personaToDelete }?.name ?: "this persona"
         AlertDialog(
             onDismissRequest = { personaToDelete = null },
-            title = { Text("Smazat personu", color = MaterialTheme.colorScheme.onSurface) },
+            title = { Text(L.s.deletePersona, color = MaterialTheme.colorScheme.onSurface) },
             text = {
                 Text(
                     "Opravdu chcete smazat personu \"$personaName\"?",
@@ -359,12 +359,12 @@ fun HomeScreen(
                     personaToDelete?.let { viewModel.deleteCustomPersona(it) }
                     personaToDelete = null
                 }) {
-                    Text("Smazat", color = MaterialTheme.colorScheme.error)
+                    Text(L.s.delete, color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { personaToDelete = null }) {
-                    Text("Zrušit", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(L.s.cancel, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             },
             containerColor = MaterialTheme.colorScheme.surface

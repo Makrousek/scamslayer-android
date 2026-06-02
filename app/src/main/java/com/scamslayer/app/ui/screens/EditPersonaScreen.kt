@@ -1,4 +1,5 @@
 package com.scamslayer.app.ui.screens
+import com.scamslayer.app.ui.L
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -136,7 +137,7 @@ fun EditPersonaScreen(
     if (showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },
-            title = { Text("Smazat personu", color = MaterialTheme.colorScheme.onSurface) },
+            title = { Text(L.s.deletePersona, color = MaterialTheme.colorScheme.onSurface) },
             text = {
                 Text(
                     "Opravdu chcete smazat personu \"${detail?.name}\"? Tuto akci nelze vrátit zpět.",
@@ -178,7 +179,7 @@ fun EditPersonaScreen(
             }
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = if (isCustom) "Upravit personu" else "Detail persony",
+                text = if (isCustom) L.s.editPersona else L.s.personaDetail,
                 style = MaterialTheme.typography.headlineLarge,
                 color = MaterialTheme.colorScheme.onBackground,
                 fontWeight = FontWeight.Bold
@@ -249,7 +250,7 @@ fun EditPersonaScreen(
                                     editedName = it
                                     nameChanged = it != d.name
                                 },
-                                label = { Text("Jméno") },
+                                label = { Text(L.s.name) },
                                 singleLine = true,
                                 modifier = Modifier.fillMaxWidth(),
                                 colors = textFieldColors
@@ -293,7 +294,7 @@ fun EditPersonaScreen(
                                     Icon(Icons.Default.Refresh, null, Modifier.size(16.dp), tint = ScamOrange)
                                 }
                                 Spacer(modifier = Modifier.width(4.dp))
-                                Text("Nový portrét", color = ScamOrange)
+                                Text(L.s.newPortrait, color = ScamOrange)
                             }
 
                         }
@@ -314,7 +315,7 @@ fun EditPersonaScreen(
                         OutlinedTextField(
                             value = editedDescription,
                             onValueChange = { editedDescription = it },
-                            label = { Text("Popis persony") },
+                            label = { Text(L.s.personaDescription) },
                             modifier = Modifier.fillMaxWidth(),
                             minLines = 3,
                             colors = textFieldColors
@@ -323,7 +324,7 @@ fun EditPersonaScreen(
                         Spacer(modifier = Modifier.height(12.dp))
 
                         Text(
-                            text = "Věk: $editedAge",
+                            text = "${L.s.age}: $editedAge",
                             style = MaterialTheme.typography.titleSmall,
                             color = MaterialTheme.colorScheme.onSurface
                         )
@@ -340,7 +341,7 @@ fun EditPersonaScreen(
                         Spacer(modifier = Modifier.height(12.dp))
 
                         Text(
-                            text = "Pohlaví",
+                            text = L.s.gender,
                             style = MaterialTheme.typography.titleSmall,
                             color = MaterialTheme.colorScheme.onSurface
                         )
@@ -354,7 +355,7 @@ fun EditPersonaScreen(
                                 ),
                                 shape = RoundedCornerShape(8.dp)
                             ) {
-                                Text("Muž")
+                                Text(L.s.male)
                             }
                             Button(
                                 onClick = { editedIsMale = false },
@@ -364,7 +365,7 @@ fun EditPersonaScreen(
                                 ),
                                 shape = RoundedCornerShape(8.dp)
                             ) {
-                                Text("Žena")
+                                Text(L.s.female)
                             }
                         }
                     }
@@ -384,7 +385,7 @@ fun EditPersonaScreen(
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Text(
-                                text = "Instrukce pro AI",
+                                text = L.s.aiInstructions,
                                 style = MaterialTheme.typography.titleSmall,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface,
@@ -392,7 +393,7 @@ fun EditPersonaScreen(
                             )
                             TextButton(onClick = { systemPromptExpanded = !systemPromptExpanded }) {
                                 Text(
-                                    text = if (systemPromptExpanded) "Skrýt" else "Zobrazit",
+                                    text = if (systemPromptExpanded) L.s.hide else L.s.show,
                                     color = ScamOrange
                                 )
                             }
@@ -408,7 +409,7 @@ fun EditPersonaScreen(
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
-                                text = "Pro změnu instrukcí upravte popis persony výše a uložte.",
+                                text = L.s.changeInstructionsHint,
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -450,11 +451,11 @@ fun EditPersonaScreen(
                             color = MaterialTheme.colorScheme.onPrimary
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Generuji a ukládám...")
+                        Text(L.s.generatingAndSaving)
                     } else {
                         Icon(Icons.Default.Save, contentDescription = null, modifier = Modifier.size(18.dp))
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Uložit a použít")
+                        Text(L.s.saveAndUse)
                     }
                 }
 
@@ -473,7 +474,7 @@ fun EditPersonaScreen(
                 ) {
                     Icon(Icons.Default.Delete, contentDescription = null, modifier = Modifier.size(18.dp))
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Smazat personu")
+                    Text(L.s.deletePersona)
                 }
                 } // end if (isCustom)
             }

@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CardGiftcard
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.Person
@@ -137,7 +138,7 @@ fun SettingsScreen(viewModel: MainViewModel) {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        SectionHeader(icon = Icons.Default.PhoneInTalk, title = "Jak to funguje")
+        SectionHeader(icon = Icons.Default.PhoneInTalk, title = L.s.howItWorks)
         Spacer(modifier = Modifier.height(8.dp))
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -145,14 +146,14 @@ fun SettingsScreen(viewModel: MainViewModel) {
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-                GuideStep(number = "1", text = "Zapněte \"Automatické přesměrování na AI\" na hlavní obrazovce")
-                GuideStep(number = "2", text = "Když vám zavolá podvodník, odmítněte hovor červeným tlačítkem")
-                GuideStep(number = "3", text = "Operátor automaticky přesměruje odmítnutý hovor na naši AI")
-                GuideStep(number = "4", text = "AI persona zvedne a zdržuje podvodníka na lince")
-                GuideStep(number = "5", text = "Poslechněte si nahrávku v záložce Nahrávky")
+                GuideStep(number = "1", text = L.s.step1)
+                GuideStep(number = "2", text = L.s.step2)
+                GuideStep(number = "3", text = L.s.step3)
+                GuideStep(number = "4", text = L.s.step4)
+                GuideStep(number = "5", text = L.s.step5)
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = "Normální hovory zvedejte jako obvykle. Na AI jdou pouze odmítnuté hovory.",
+                    text = L.s.normalCallsNote,
                     style = MaterialTheme.typography.bodySmall,
                     color = ScamOrange
                 )
@@ -160,30 +161,27 @@ fun SettingsScreen(viewModel: MainViewModel) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = "Jak funguje přesměrování",
+                    text = L.s.howForwardingWorks,
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "Aplikace nastaví přesměrování obsazených/odmítnutých hovorů přes vašeho operátora (USSD kód **67*). " +
-                        "Když odmítnete hovor, operátor ho automaticky přepojí na naše AI číslo.",
+                    text = L.s.forwardingExplanation,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Pokud automatické nastavení nefunguje",
+                    text = L.s.ifAutoDoesntWork,
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "Na některých telefonech se může otevřít dialer s USSD kódem (vypadá jako **67*číslo#). " +
-                        "Stačí stisknout tlačítko Volat pro potvrzení — " +
-                        "tím řeknete operátorovi, kam má odmítnuté hovory přesměrovat.",
+                    text = L.s.dialerExplanation,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -191,17 +189,14 @@ fun SettingsScreen(viewModel: MainViewModel) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = "Důležité upozornění",
+                    text = L.s.importantNote,
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = ScamRed
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "ScamSlayer funguje pouze pokud váš operátor podporuje přesměrování hovorů. " +
-                        "Předplacené karty většiny operátorů přesměrování nepodporují — " +
-                        "v takovém případě aplikace nebude fungovat. " +
-                        "Pro plnou funkčnost je potřeba paušální tarif.",
+                    text = L.s.prepaidWarning,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -210,7 +205,7 @@ fun SettingsScreen(viewModel: MainViewModel) {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        SectionHeader(icon = Icons.Default.Shield, title = "Persony")
+        SectionHeader(icon = Icons.Default.Shield, title = L.s.personas)
         Spacer(modifier = Modifier.height(8.dp))
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -219,15 +214,13 @@ fun SettingsScreen(viewModel: MainViewModel) {
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    text = "Každá persona má unikátní osobnost, hlas a příběh. AI zůstane v roli po celý hovor.",
+                    text = L.s.personasDesc,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Můžete si vytvořit vlastní personu s popisem, AI portrétem a hlasem podle vašeho výběru. " +
-                        "Vlastní personu můžete přejmenovat a dát jí své skutečné jméno — " +
-                        "někteří podvodníci mají telefonní číslo spojené se jménem, takže persona s vaším jménem bude působit důvěryhodněji.",
+                    text = L.s.customPersonaDesc,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -236,7 +229,7 @@ fun SettingsScreen(viewModel: MainViewModel) {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        SectionHeader(icon = Icons.Default.Lightbulb, title = "Tipy")
+        SectionHeader(icon = Icons.Default.Lightbulb, title = L.s.tips)
         Spacer(modifier = Modifier.height(8.dp))
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -244,17 +237,17 @@ fun SettingsScreen(viewModel: MainViewModel) {
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-                TipItem("Zkoušejte různé persony — některé fungují lépe na určité typy podvodů")
-                TipItem("Čím déle AI udrží podvodníka na lince, tím víc mu plýtvá časem")
-                TipItem("Sdílejte vtipné nahrávky s přáteli a šiřte povědomí")
-                TipItem("Vlastní persony s detailním popisem fungují nejlépe")
+                TipItem(L.s.tip1)
+                TipItem(L.s.tip2)
+                TipItem(L.s.tip3)
+                TipItem(L.s.tip4)
             }
         }
 
         Spacer(modifier = Modifier.height(20.dp))
 
         // Account
-        SectionHeader(icon = Icons.Default.Person, title = "Účet")
+        SectionHeader(icon = Icons.Default.Person, title = L.s.account)
         Spacer(modifier = Modifier.height(8.dp))
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -263,7 +256,7 @@ fun SettingsScreen(viewModel: MainViewModel) {
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    text = "Telefonní číslo: $userPhone",
+                    text = "${L.s.phoneNumber}: $userPhone",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -272,9 +265,7 @@ fun SettingsScreen(viewModel: MainViewModel) {
                     OutlinedTextField(
                         value = newPhone,
                         onValueChange = { newPhone = it },
-                        label = { Text("Nové telefonní číslo") },
-                        placeholder = { Text("+420...") },
-                        singleLine = true,
+                        label = { Text(L.s.phoneNumber) },
                         modifier = Modifier.fillMaxWidth(),
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = ScamRed,
@@ -283,30 +274,21 @@ fun SettingsScreen(viewModel: MainViewModel) {
                         )
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Button(
-                            onClick = {
-                                val cleaned = newPhone.replace(" ", "").replace("-", "")
-                                if (cleaned.startsWith("+") && cleaned.length >= 9) {
-                                    viewModel.setUserPhoneNumber(cleaned)
-                                    viewModel.loadPersonas()
-                                    viewModel.loadRecordings()
-                                    showChangePhone = false
-                                    newPhone = ""
-                                }
-                            },
-                            colors = ButtonDefaults.buttonColors(containerColor = ScamRed),
-                            shape = RoundedCornerShape(8.dp)
-                        ) {
-                            Text("Uložit")
-                        }
-                        TextButton(onClick = { showChangePhone = false; newPhone = "" }) {
-                            Text("Zrušit")
-                        }
+                    Button(
+                        onClick = {
+                            if (newPhone.isNotBlank()) {
+                                viewModel.setUserPhoneNumber(newPhone.trim())
+                                showChangePhone = false
+                            }
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = ScamRed),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Text(L.s.save)
                     }
                 } else {
                     TextButton(onClick = { showChangePhone = true; newPhone = userPhone }) {
-                        Text("Změnit číslo", color = ScamOrange)
+                        Text(L.s.changeNumber, color = ScamOrange)
                     }
                 }
             }
@@ -314,7 +296,7 @@ fun SettingsScreen(viewModel: MainViewModel) {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        SectionHeader(icon = Icons.Default.Info, title = "O aplikaci")
+        SectionHeader(icon = Icons.Default.Info, title = L.s.about)
         Spacer(modifier = Modifier.height(8.dp))
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -323,13 +305,13 @@ fun SettingsScreen(viewModel: MainViewModel) {
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    text = "ScamSlayer v1.0",
+                    text = "ScamSlayer v1.4",
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "AI asistent proti podvodným hovorům. Přesměruje spam hovory na AI, která podvodníka zdržuje a nahrává celý rozhovor.",
+                    text = L.s.aboutDesc,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -341,64 +323,26 @@ fun SettingsScreen(viewModel: MainViewModel) {
 }
 
 @Composable
-private fun SectionHeader(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
-    title: String
-) {
+private fun SectionHeader(icon: ImageVector, title: String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            modifier = Modifier.size(20.dp),
-            tint = ScamOrange
-        )
+        Icon(imageVector = icon, contentDescription = null, tint = ScamRed, modifier = Modifier.size(20.dp))
         Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onBackground,
-            fontWeight = FontWeight.SemiBold
-        )
+        Text(text = title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onBackground)
     }
 }
 
 @Composable
 private fun GuideStep(number: String, text: String) {
-    Row(
-        modifier = Modifier.padding(vertical = 4.dp),
-        verticalAlignment = Alignment.Top
-    ) {
-        Text(
-            text = "$number.",
-            style = MaterialTheme.typography.bodyMedium,
-            color = ScamRed,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.width(24.dp)
-        )
-        Text(
-            text = text,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+    Row(modifier = Modifier.padding(vertical = 3.dp), verticalAlignment = Alignment.Top) {
+        Text(text = "$number. ", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold, color = ScamRed, modifier = Modifier.width(24.dp))
+        Text(text = text, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
 
 @Composable
 private fun TipItem(text: String) {
-    Row(
-        modifier = Modifier.padding(vertical = 3.dp),
-        verticalAlignment = Alignment.Top
-    ) {
-        Text(
-            text = "\u2022 ",
-            style = MaterialTheme.typography.bodyMedium,
-            color = ScamOrange,
-            modifier = Modifier.width(16.dp)
-        )
-        Text(
-            text = text,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+    Row(modifier = Modifier.padding(vertical = 3.dp), verticalAlignment = Alignment.Top) {
+        Text(text = "\u2022 ", style = MaterialTheme.typography.bodyMedium, color = ScamOrange, modifier = Modifier.width(16.dp))
+        Text(text = text, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }

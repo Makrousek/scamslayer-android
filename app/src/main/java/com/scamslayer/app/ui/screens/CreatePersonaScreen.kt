@@ -1,4 +1,5 @@
 package com.scamslayer.app.ui.screens
+import com.scamslayer.app.ui.L
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -107,7 +108,7 @@ fun CreatePersonaScreen(
             }
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = "Vytvořit personu",
+                text = L.s.createPersonaTitle,
                 style = MaterialTheme.typography.headlineLarge,
                 color = MaterialTheme.colorScheme.onBackground,
                 fontWeight = FontWeight.Bold
@@ -127,8 +128,8 @@ fun CreatePersonaScreen(
                     OutlinedTextField(
                         value = name,
                         onValueChange = { name = it },
-                        label = { Text("Jméno (volitelné)") },
-                        placeholder = { Text("např. Jana Nováková") },
+                        label = { Text(L.s.nameOptional) },
+                        placeholder = { Text("") },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
                         colors = textFieldColors
@@ -139,8 +140,8 @@ fun CreatePersonaScreen(
                     OutlinedTextField(
                         value = description,
                         onValueChange = { description = it },
-                        label = { Text("Popište svou personu") },
-                        placeholder = { Text("např. popletený starý farmář z Moravy") },
+                        label = { Text(L.s.describePersona) },
+                        placeholder = { Text("") },
                         modifier = Modifier.fillMaxWidth(),
                         minLines = 3,
                         colors = textFieldColors
@@ -150,7 +151,7 @@ fun CreatePersonaScreen(
 
                     // Age slider
                     Text(
-                        text = "Věk: $age",
+                        text = "${L.s.age}: $age",
                         style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -168,7 +169,7 @@ fun CreatePersonaScreen(
 
                     // Gender toggle
                     Text(
-                        text = "Pohlaví",
+                        text = L.s.gender,
                         style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -182,7 +183,7 @@ fun CreatePersonaScreen(
                             ),
                             shape = RoundedCornerShape(8.dp)
                         ) {
-                            Text("Muž")
+                            Text(L.s.male)
                         }
                         Button(
                             onClick = { isMale = false },
@@ -192,7 +193,7 @@ fun CreatePersonaScreen(
                             ),
                             shape = RoundedCornerShape(8.dp)
                         ) {
-                            Text("Žena")
+                            Text(L.s.female)
                         }
                     }
                 }
@@ -229,9 +230,9 @@ fun CreatePersonaScreen(
                         color = MaterialTheme.colorScheme.onPrimary
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Generuji...")
+                    Text(L.s.generating)
                 } else {
-                    Text("Vygenerovat personu")
+                    Text(L.s.generatePersona)
                 }
             }
 
@@ -311,7 +312,7 @@ fun CreatePersonaScreen(
                                 )
                             }
                             Spacer(modifier = Modifier.width(4.dp))
-                            Text("Nový portrét", color = ScamOrange)
+                            Text(L.s.newPortrait, color = ScamOrange)
                         }
 
                         TextButton(
@@ -347,7 +348,7 @@ fun CreatePersonaScreen(
                                 )
                             }
                             Spacer(modifier = Modifier.width(4.dp))
-                            Text("Nový popis", color = ScamOrange)
+                            Text(L.s.newDescription, color = ScamOrange)
                         }
                     }
                 }
@@ -368,7 +369,7 @@ fun CreatePersonaScreen(
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Text(
-                                text = "Instrukce pro AI",
+                                text = L.s.aiInstructions,
                                 style = MaterialTheme.typography.titleSmall,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface,
@@ -376,7 +377,7 @@ fun CreatePersonaScreen(
                             )
                             TextButton(onClick = { systemPromptExpanded = !systemPromptExpanded }) {
                                 Text(
-                                    text = if (systemPromptExpanded) "Skrýt" else "Zobrazit",
+                                    text = if (systemPromptExpanded) L.s.hide else L.s.show,
                                     color = ScamOrange
                                 )
                             }
@@ -409,7 +410,7 @@ fun CreatePersonaScreen(
                     },
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text("Zahodit", color = MaterialTheme.colorScheme.error)
+                    Text(L.s.discard, color = MaterialTheme.colorScheme.error)
                 }
 
                 Button(
@@ -427,7 +428,7 @@ fun CreatePersonaScreen(
                         modifier = Modifier.size(18.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("Uložit a použít")
+                    Text(L.s.saveAndUse)
                 }
             }
         }

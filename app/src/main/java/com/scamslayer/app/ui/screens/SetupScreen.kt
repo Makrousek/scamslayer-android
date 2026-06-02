@@ -1,5 +1,6 @@
 package com.scamslayer.app.ui.screens
 
+import com.scamslayer.app.ui.L
 import android.Manifest
 import android.content.pm.PackageManager
 import android.telephony.TelephonyManager
@@ -93,7 +94,7 @@ fun SetupScreen(viewModel: MainViewModel) {
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "AI asistent, který zvedne podvodné hovory za vás a zdržuje podvodníky na lince.",
+            text = L.s.setupDesc,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center
@@ -102,7 +103,7 @@ fun SetupScreen(viewModel: MainViewModel) {
         Spacer(modifier = Modifier.height(32.dp))
 
         Text(
-            text = "Zadejte své telefonní číslo",
+            text = L.s.enterPhone,
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.Center
@@ -168,7 +169,7 @@ fun SetupScreen(viewModel: MainViewModel) {
             shape = RoundedCornerShape(12.dp)
         ) {
             Text(
-                text = "Pokračovat",
+                text = L.s.continueBtn,
                 modifier = Modifier.padding(vertical = 8.dp),
                 style = MaterialTheme.typography.titleMedium
             )
