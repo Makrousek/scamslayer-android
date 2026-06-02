@@ -59,6 +59,7 @@ fun CreatePersonaScreen(
     viewModel: MainViewModel,
     onBack: () -> Unit
 ) {
+    val strings by L.current.collectAsState()  // triggers recomposition on language change
     val uiState by viewModel.uiState.collectAsState()
 
     // Input state

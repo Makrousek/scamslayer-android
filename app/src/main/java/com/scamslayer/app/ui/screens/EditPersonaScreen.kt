@@ -65,6 +65,7 @@ fun EditPersonaScreen(
     personaId: String,
     onBack: () -> Unit
 ) {
+    val strings by L.current.collectAsState()  // triggers recomposition on language change
     val uiState by viewModel.uiState.collectAsState()
 
     val isCustom = personaId.startsWith("custom_")

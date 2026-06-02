@@ -1,6 +1,8 @@
 package com.scamslayer.app.ui.screens
 
 import com.scamslayer.app.ui.L
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import android.Manifest
 import android.content.pm.PackageManager
 import android.telephony.TelephonyManager
@@ -43,6 +45,7 @@ import com.scamslayer.app.ui.theme.ScamRed
 
 @Composable
 fun SetupScreen(viewModel: MainViewModel) {
+    val strings by L.current.collectAsState()  // triggers recomposition on language change
     val context = LocalContext.current
     var phoneNumber by remember { mutableStateOf("") }
     var error by remember { mutableStateOf<String?>(null) }

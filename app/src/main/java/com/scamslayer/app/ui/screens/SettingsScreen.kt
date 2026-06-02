@@ -53,6 +53,7 @@ import com.scamslayer.app.ui.theme.ScamRed
 
 @Composable
 fun SettingsScreen(viewModel: MainViewModel) {
+    val strings by L.current.collectAsState()  // triggers recomposition on language change
     val scrollState = rememberScrollState()
     val isPremium by viewModel.isPremium.collectAsState()
     val userPhone by viewModel.userPhoneNumber.collectAsState()

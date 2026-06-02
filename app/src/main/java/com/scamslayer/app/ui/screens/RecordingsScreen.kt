@@ -49,6 +49,7 @@ import com.scamslayer.app.ui.theme.ScamRed
 
 @Composable
 fun RecordingsScreen(viewModel: MainViewModel) {
+    val strings by L.current.collectAsState()  // triggers recomposition on language change
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }

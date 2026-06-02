@@ -63,6 +63,7 @@ fun HomeScreen(
     onCreatePersona: () -> Unit = {},
     onEditPersona: (String) -> Unit = {}
 ) {
+    val strings by L.current.collectAsState()  // triggers recomposition on language change
     val uiState by viewModel.uiState.collectAsState()
     val selectedPersonaId by viewModel.selectedPersonaId.collectAsState()
     val showOnAllCalls by viewModel.showOnAllCalls.collectAsState()

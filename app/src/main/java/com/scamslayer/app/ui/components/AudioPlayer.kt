@@ -1,4 +1,5 @@
 package com.scamslayer.app.ui.components
+import com.scamslayer.app.ui.L
 
 import android.media.AudioAttributes
 import android.media.MediaPlayer
@@ -152,7 +153,7 @@ fun AudioPlayer(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Načítám audio...",
+                        text = L.s.loadingAudio,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
