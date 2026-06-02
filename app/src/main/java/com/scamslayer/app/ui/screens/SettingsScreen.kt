@@ -1,7 +1,11 @@
 package com.scamslayer.app.ui.screens
+import com.scamslayer.app.ui.L
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -72,7 +76,7 @@ fun SettingsScreen(viewModel: MainViewModel) {
             )
             Spacer(modifier = Modifier.width(12.dp))
             Text(
-                text = "Návod",
+                text = L.s.guide,
                 style = MaterialTheme.typography.headlineLarge,
                 color = MaterialTheme.colorScheme.onBackground,
                 fontWeight = FontWeight.Bold
@@ -83,12 +87,11 @@ fun SettingsScreen(viewModel: MainViewModel) {
 
         // Language selector
         val currentLang by viewModel.personaLanguage.collectAsState()
-        val displayLang = when (currentLang) {
-            "cs" -> "Čeština"
-            "en" -> "English"
-            else -> "Auto (${java.util.Locale.getDefault().displayLanguage})"
-        }
-        SectionHeader(icon = Icons.Default.Info, title = "Jazyk person / Persona language")
+        val languages = listOf("" to "Auto", "cs" to "Čeština", "en" to "English")
+        val displayLang = languages.find { it.first == currentLang }?.second ?: "Auto"
+        var langExpanded by remember { mutableStateOf(false) }
+
+        SectionHeader(icon = Icons.Default.Info, title = L.s.languageLabel)
         Spacer(modifier = Modifier.height(8.dp))
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -96,23 +99,36 @@ fun SettingsScreen(viewModel: MainViewModel) {
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = "Aktuální: $displayLang",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    listOf("" to "Auto", "cs" to "Čeština", "en" to "English").forEach { (code, label) ->
-                        Button(
-                            onClick = { viewModel.setPersonaLanguage(code) },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = if (currentLang == code) ScamRed else MaterialTheme.colorScheme.surfaceVariant,
-                                contentColor = if (currentLang == code) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
-                            ),
-                            shape = RoundedCornerShape(8.dp)
-                        ) {
-                            Text(label, style = MaterialTheme.typography.labelMedium)
+                Box {
+                    Button(
+                        onClick = { langExpanded = true },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+                        shape = RoundedCornerShape(8.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = displayLang,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Icon(
+                            imageVector = Icons.Default.Info,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    DropdownMenu(
+                        expanded = langExpanded,
+                        onDismissRequest = { langExpanded = false }
+                    ) {
+                        languages.forEach { (code, label) ->
+                            DropdownMenuItem(
+                                text = { Text(label) },
+                                onClick = {
+                                    viewModel.setPersonaLanguage(code)
+                                    langExpanded = false
+                                }
+                            )
                         }
                     }
                 }

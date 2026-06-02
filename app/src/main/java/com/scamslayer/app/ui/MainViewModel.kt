@@ -64,6 +64,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun setPersonaLanguage(lang: String) {
         _personaLanguage.value = lang
+        L.setLanguage(lang)
         getApplication<Application>().getSharedPreferences("scamslayer", 0)
             .edit().putString("persona_language", lang).apply()
         loadPersonas()
@@ -85,6 +86,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val isPremium: StateFlow<Boolean> = _isPremium.asStateFlow()
 
     init {
+        L.setLanguage(_personaLanguage.value)
         checkSetup()
     }
 

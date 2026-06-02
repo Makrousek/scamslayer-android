@@ -1,4 +1,5 @@
 package com.scamslayer.app.ui.screens
+import com.scamslayer.app.ui.L
 
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
@@ -85,7 +86,7 @@ fun RecordingsScreen(viewModel: MainViewModel) {
                     )
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
-                        text = "Nahrávky",
+                        text = L.s.recordings,
                         style = MaterialTheme.typography.headlineLarge,
                         color = MaterialTheme.colorScheme.onBackground,
                         fontWeight = FontWeight.Bold
@@ -151,12 +152,12 @@ fun RecordingsScreen(viewModel: MainViewModel) {
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            text = "Zatím žádné nahrávky",
+                            text = L.s.noRecordingsYet,
                             style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
-                            text = "Odmítněte spam hovor a začněte!",
+                            text = L.s.startByRejectingSpam,
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
                         )
@@ -229,13 +230,13 @@ fun RecordingsScreen(viewModel: MainViewModel) {
                 onDismissRequest = { recordingToDelete = null },
                 title = {
                     Text(
-                        text = "Smazat nahrávku",
+                        text = L.s.deleteRecording,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                 },
                 text = {
                     Text(
-                        text = "Opravdu chcete smazat tuto nahrávku?",
+                        text = L.s.deleteRecordingConfirm,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 },

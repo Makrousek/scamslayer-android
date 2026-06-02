@@ -1,4 +1,5 @@
 package com.scamslayer.app.ui.screens
+import com.scamslayer.app.ui.L
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -88,7 +89,7 @@ fun HomeScreen(
             )
             Spacer(modifier = Modifier.width(12.dp))
             Text(
-                text = "ScamSlayer",
+                text = L.s.appTitle,
                 style = MaterialTheme.typography.displayMedium,
                 color = MaterialTheme.colorScheme.onBackground,
                 fontWeight = FontWeight.Bold
@@ -179,12 +180,12 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.width(16.dp))
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = "Aktivní persona",
+                            text = L.s.activePersona,
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
-                            text = currentPersona?.name ?: "Žádná persona nevybrána",
+                            text = currentPersona?.name ?: L.s.noPersonaSelected,
                             style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.onSurface
                         )
@@ -232,12 +233,12 @@ fun HomeScreen(
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "Automatické přesměrování",
+                        text = L.s.autoForwarding,
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        text = "Přesměruje odmítnuté hovory přes operátora. Nefunguje u předplacených karet.",
+                        text = L.s.autoForwardingDesc,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -264,7 +265,7 @@ fun HomeScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Vybrat personu",
+                text = L.s.selectPersona,
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onBackground
             )
@@ -276,7 +277,7 @@ fun HomeScreen(
                 )
             } else {
                 TextButton(onClick = { viewModel.loadPersonas() }) {
-                    Text(text = "Obnovit", color = ScamOrange)
+                    Text(text = L.s.refresh, color = ScamOrange)
                 }
             }
         }
@@ -316,7 +317,7 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(12.dp))
         } else if (!uiState.isLoadingPersonas) {
             Text(
-                text = "Žádné persony nejsou k dispozici. Zkontrolujte připojení.",
+                text = L.s.noPersonasAvailable,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -335,7 +336,7 @@ fun HomeScreen(
                 modifier = Modifier.size(20.dp)
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text("Vytvořit vlastní personu")
+            Text(L.s.createPersona)
         }
 
         Spacer(modifier = Modifier.height(80.dp))

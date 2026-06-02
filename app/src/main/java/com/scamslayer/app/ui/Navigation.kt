@@ -39,13 +39,19 @@ import com.scamslayer.app.ui.theme.ScamRed
 
 sealed class Screen(
     val route: String,
-    val title: String,
+    val titleKey: String,
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector
 ) {
-    data object Home : Screen("home", "Domů", Icons.Filled.Home, Icons.Outlined.Home)
-    data object Recordings : Screen("recordings", "Nahrávky", Icons.Filled.Mic, Icons.Outlined.Mic)
-    data object Settings : Screen("settings", "Návod", Icons.Filled.MenuBook, Icons.Outlined.MenuBook)
+    val title: String get() = when (titleKey) {
+        "home" -> L.s.navHome
+        "recordings" -> L.s.navRecordings
+        "guide" -> L.s.navGuide
+        else -> titleKey
+    }
+    data object Home : Screen("home", "home", Icons.Filled.Home, Icons.Outlined.Home)
+    data object Recordings : Screen("recordings", "recordings", Icons.Filled.Mic, Icons.Outlined.Mic)
+    data object Settings : Screen("settings", "guide", Icons.Filled.MenuBook, Icons.Outlined.MenuBook)
 }
 
 val bottomNavItems = listOf(
