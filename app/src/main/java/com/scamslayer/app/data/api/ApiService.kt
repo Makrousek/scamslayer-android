@@ -20,6 +20,9 @@ interface ApiService {
     @GET("/api/personas")
     suspend fun getPersonas(@Query("user_number") userNumber: String = "", @Query("language") language: String = ""): List<PersonaDto>
 
+    @GET("/api/config/twilio-number")
+    suspend fun getTwilioNumber(@Query("user_number") userNumber: String): Map<String, String>
+
     @GET("/api/recordings")
     suspend fun getRecordings(@Query("user_number") userNumber: String = ""): List<RecordingDto>
 

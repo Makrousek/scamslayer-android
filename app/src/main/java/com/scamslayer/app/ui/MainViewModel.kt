@@ -95,6 +95,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             val phone = settingsRepository.getUserPhoneNumberSync()
             _isSetupComplete.value = phone.isNotBlank()
             if (phone.isNotBlank()) {
+                fetchTwilioNumber(phone)
                 loadPersonas()
                 loadRecordings()
                 registerFcmToken()
@@ -108,10 +109,22 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             settingsRepository.setUserPhoneNumber(phoneNumber)
             _isSetupComplete.value = true
+            fetchTwilioNumber(phoneNumber)
             loadPersonas()
             loadRecordings()
             registerFcmToken()
             checkForwardingStatus()
+        }
+    }
+
+    private fun fetchTwilioNumber(phoneNumber: String) {
+        viewModelScope.launch {
+            try {
+                val url = settingsRepository.getBackendUrlSync()
+                val result = ApiClient.getService(url).getTwilioNumber(phoneNumber)
+                val twilioNum = result["twilio_number"] ?: return@launch
+                settingsRepository.setTwilioForwardNumber(twilioNum)
+            } catch (_: Exception) {}
         }
     }
 
