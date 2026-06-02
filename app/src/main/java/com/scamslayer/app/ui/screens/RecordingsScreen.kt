@@ -132,7 +132,7 @@ fun RecordingsScreen(viewModel: MainViewModel) {
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         TextButton(onClick = { viewModel.loadRecordings() }) {
-                            Text("Zkusit znovu", color = ScamOrange)
+                            Text(L.s.tryAgain, color = ScamOrange)
                         }
                     }
                 }
@@ -194,7 +194,7 @@ fun RecordingsScreen(viewModel: MainViewModel) {
                             onShareTranscript = {
                                 val shareIntent = Intent(Intent.ACTION_SEND).apply {
                                     type = "text/plain"
-                                    putExtra(Intent.EXTRA_SUBJECT, "ScamSlayer Přepis")
+                                    putExtra(Intent.EXTRA_SUBJECT, "ScamSlayer ${L.s.transcript}")
                                     putExtra(
                                         Intent.EXTRA_TEXT,
                                         buildString {
@@ -247,12 +247,12 @@ fun RecordingsScreen(viewModel: MainViewModel) {
                             recordingToDelete = null
                         }
                     ) {
-                        Text("Smazat", color = MaterialTheme.colorScheme.error)
+                        Text(L.s.delete, color = MaterialTheme.colorScheme.error)
                     }
                 },
                 dismissButton = {
                     TextButton(onClick = { recordingToDelete = null }) {
-                        Text("Zrušit", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text(L.s.cancel, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 },
                 containerColor = MaterialTheme.colorScheme.surface
@@ -263,12 +263,12 @@ fun RecordingsScreen(viewModel: MainViewModel) {
         if (recordingToRename != null) {
             AlertDialog(
                 onDismissRequest = { recordingToRename = null },
-                title = { Text("Přejmenovat nahrávku", color = MaterialTheme.colorScheme.onSurface) },
+                title = { Text(L.s.renameRecording, color = MaterialTheme.colorScheme.onSurface) },
                 text = {
                     OutlinedTextField(
                         value = renameText,
                         onValueChange = { renameText = it },
-                        label = { Text("Název") },
+                        label = { Text(L.s.recordingName) },
                         singleLine = true,
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = ScamRed,
@@ -284,12 +284,12 @@ fun RecordingsScreen(viewModel: MainViewModel) {
                         }
                         recordingToRename = null
                     }) {
-                        Text("Uložit", color = ScamRed)
+                        Text(L.s.save, color = ScamRed)
                     }
                 },
                 dismissButton = {
                     TextButton(onClick = { recordingToRename = null }) {
-                        Text("Zrušit", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text(L.s.cancel, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 },
                 containerColor = MaterialTheme.colorScheme.surface

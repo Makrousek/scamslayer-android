@@ -1,4 +1,5 @@
 package com.scamslayer.app.ui.components
+import com.scamslayer.app.ui.L
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -129,7 +130,7 @@ fun RecordingItem(
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = recording.title ?: recording.callerNumber ?: "Neznámý",
+                        text = recording.title ?: recording.callerNumber ?: L.s.unknown,
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurface,
                         maxLines = 2,
@@ -184,7 +185,7 @@ fun RecordingItem(
                     if (!recording.transcript.isNullOrBlank()) {
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
-                            text = "Přepis",
+                            text = L.s.transcript,
                             style = MaterialTheme.typography.labelLarge,
                             color = MaterialTheme.colorScheme.onSurface
                         )
@@ -219,7 +220,7 @@ fun RecordingItem(
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
-                                text = "Sdílet audio",
+                                text = L.s.shareAudio,
                                 color = ScamOrange,
                                 style = MaterialTheme.typography.labelMedium
                             )
@@ -236,7 +237,7 @@ fun RecordingItem(
                                 )
                                 Spacer(modifier = Modifier.width(4.dp))
                                 Text(
-                                    text = "Sdílet text",
+                                    text = L.s.shareTranscript,
                                     color = ScamOrange,
                                     style = MaterialTheme.typography.labelMedium
                                 )
