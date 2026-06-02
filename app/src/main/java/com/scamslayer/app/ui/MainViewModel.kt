@@ -57,6 +57,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val backendUrl: StateFlow<String> = settingsRepository.backendUrl
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "http://10.0.2.2:8000")
 
+    private val _personaLanguage = MutableStateFlow(
+        application.getSharedPreferences("scamslayer", 0).getString("persona_language", "") ?: ""
+    )
+    val personaLanguage: StateFlow<String> = _personaLanguage
+
+    fun setPersonaLanguage(lang: String) {
+        _personaLanguage.value = lang
+        getApplication<Application>().getSharedPreferences("scamslayer", 0)
+            .edit().putString("persona_language", lang).apply()
+        loadPersonas()
+    }
+
     val twilioForwardNumber: StateFlow<String> = settingsRepository.twilioForwardNumber
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "")
 
@@ -254,7 +266,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             try {
                 val url = settingsRepository.getBackendUrlSync()
                 val userNumber = settingsRepository.getUserPhoneNumberSync()
-                val personas = ApiClient.getService(url).getPersonas(userNumber = userNumber)
+                val lang = _personaLanguage.value.ifEmpty {
+                    java.util.Locale.getDefault().language  // "cs", "en", etc.
+                }
+                val personas = ApiClient.getService(url).getPersonas(userNumber = userNumber, language = lang)
                 _uiState.value = _uiState.value.copy(
                     personas = personas,
                     isLoadingPersonas = false

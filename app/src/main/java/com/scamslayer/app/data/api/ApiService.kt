@@ -18,7 +18,7 @@ import retrofit2.http.Query
 interface ApiService {
 
     @GET("/api/personas")
-    suspend fun getPersonas(@Query("user_number") userNumber: String = ""): List<PersonaDto>
+    suspend fun getPersonas(@Query("user_number") userNumber: String = "", @Query("language") language: String = ""): List<PersonaDto>
 
     @GET("/api/recordings")
     suspend fun getRecordings(@Query("user_number") userNumber: String = ""): List<RecordingDto>

@@ -81,6 +81,46 @@ fun SettingsScreen(viewModel: MainViewModel) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
+        // Language selector
+        val currentLang by viewModel.personaLanguage.collectAsState()
+        val displayLang = when (currentLang) {
+            "cs" -> "Čeština"
+            "en" -> "English"
+            else -> "Auto (${java.util.Locale.getDefault().displayLanguage})"
+        }
+        SectionHeader(icon = Icons.Default.Info, title = "Jazyk person / Persona language")
+        Spacer(modifier = Modifier.height(8.dp))
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = "Aktuální: $displayLang",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    listOf("" to "Auto", "cs" to "Čeština", "en" to "English").forEach { (code, label) ->
+                        Button(
+                            onClick = { viewModel.setPersonaLanguage(code) },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (currentLang == code) ScamRed else MaterialTheme.colorScheme.surfaceVariant,
+                                contentColor = if (currentLang == code) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
+                            ),
+                            shape = RoundedCornerShape(8.dp)
+                        ) {
+                            Text(label, style = MaterialTheme.typography.labelMedium)
+                        }
+                    }
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
         SectionHeader(icon = Icons.Default.PhoneInTalk, title = "Jak to funguje")
         Spacer(modifier = Modifier.height(8.dp))
         Card(
