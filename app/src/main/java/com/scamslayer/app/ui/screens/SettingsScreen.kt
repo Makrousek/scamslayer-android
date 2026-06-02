@@ -63,6 +63,8 @@ fun SettingsScreen(viewModel: MainViewModel) {
     var showChangePhone by remember { mutableStateOf(false) }
     var newPhone by remember { mutableStateOf("") }
 
+    // Use strings.lang as key to force full recomposition on language change
+    androidx.compose.runtime.key(strings.lang) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -321,6 +323,7 @@ fun SettingsScreen(viewModel: MainViewModel) {
 
         Spacer(modifier = Modifier.height(80.dp))
     }
+    } // end key(strings.lang)
 }
 
 @Composable
