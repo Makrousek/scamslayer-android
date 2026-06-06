@@ -270,7 +270,6 @@ data class Strings(
             enterPhone = "Zadejte telefonní číslo",
             phoneHint = "+420...",
             continueBtn = "Pokračovat",
-            forwardingFailed = "Přesměrování nefunguje u vašeho tarifu. Zkontrolujte, zda nemáte předplacenou kartu.",
             premium = "Premium",
             callsThisMonth = "Hovorů",
             unlimitedCalls = "Neomezené hovory a vlastní persony",
@@ -279,6 +278,7 @@ data class Strings(
             premiumFeature2 = "Vlastní persony",
             premiumFeature3 = "Prioritní podpora",
             freeDesc = "Free: 2 hovory/měsíc",
+            forwardingFailed = "Přesměrování nefunguje u vašeho tarifu. Zkontrolujte, zda nemáte předplacenou kartu.",
         )
 
         val EN = Strings(
@@ -369,7 +369,6 @@ data class Strings(
             enterPhone = "Enter your phone number",
             phoneHint = "+1...",
             continueBtn = "Continue",
-            forwardingFailed = "Forwarding doesn't work with your plan. Check if you have a prepaid card.",
             premium = "Premium",
             callsThisMonth = "Calls",
             unlimitedCalls = "Unlimited calls and custom personas",
@@ -378,6 +377,7 @@ data class Strings(
             premiumFeature2 = "Custom personas",
             premiumFeature3 = "Priority support",
             freeDesc = "Free: 2 calls/month",
+            forwardingFailed = "Forwarding doesn't work with your plan. Check if you have a prepaid card.",
         )
 
         val AR = Strings(
