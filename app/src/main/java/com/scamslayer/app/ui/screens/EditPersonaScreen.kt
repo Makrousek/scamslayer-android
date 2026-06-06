@@ -58,6 +58,37 @@ import com.scamslayer.app.data.model.CustomPersonaDetail
 import com.scamslayer.app.ui.MainViewModel
 import com.scamslayer.app.ui.theme.ScamOrange
 import com.scamslayer.app.ui.theme.ScamRed
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+
+private val PERSONA_LANGUAGES = listOf(
+    "cs" to "Čeština",
+    "en" to "English",
+    "en-IN" to "English (Indian)",
+    "en-CN" to "English (Chinese)",
+    "de" to "Deutsch",
+    "es" to "Español",
+    "fr" to "Français",
+    "it" to "Italiano",
+    "pt" to "Português",
+    "pl" to "Polski",
+    "sk" to "Slovenčina",
+    "uk" to "Українська",
+    "ru" to "Русский",
+    "nl" to "Nederlands",
+    "sv" to "Svenska",
+    "da" to "Dansk",
+    "no" to "Norsk",
+    "fi" to "Suomi",
+    "ja" to "日本語",
+    "ko" to "한국어",
+    "zh" to "中文",
+    "ar" to "العربية",
+    "hi" to "हिन्दी",
+    "tr" to "Türkçe",
+    "vi" to "Tiếng Việt",
+)
 
 @Composable
 fun EditPersonaScreen(
@@ -82,6 +113,8 @@ fun EditPersonaScreen(
     var editedDescription by remember { mutableStateOf("") }
     var editedAge by remember { mutableIntStateOf(40) }
     var editedIsMale by remember { mutableStateOf(true) }
+    var editedLanguage by remember { mutableStateOf("cs") }
+    var languageDropdownExpanded by remember { mutableStateOf(false) }
     var nameChanged by remember { mutableStateOf(false) }
     var editedSystemPrompt by remember { mutableStateOf("") }
     var systemPromptExpanded by remember { mutableStateOf(false) }
@@ -108,6 +141,7 @@ fun EditPersonaScreen(
                     editedDescription = result.originalDescription
                     editedAge = result.age
                     editedIsMale = result.gender != "female"
+                    editedLanguage = result.language
                     editedSystemPrompt = result.systemPrompt
                 } else {
                     error = err ?: "Nepodařilo se načíst personu"
@@ -369,6 +403,44 @@ fun EditPersonaScreen(
                                 Text(L.s.female)
                             }
                         }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        // Language dropdown
+                        Text(
+                            text = L.s.personaLanguage,
+                            style = MaterialTheme.typography.titleSmall,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        @OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
+                        ExposedDropdownMenuBox(
+                            expanded = languageDropdownExpanded,
+                            onExpandedChange = { languageDropdownExpanded = it }
+                        ) {
+                            OutlinedTextField(
+                                value = PERSONA_LANGUAGES.firstOrNull { it.first == editedLanguage }?.second ?: editedLanguage,
+                                onValueChange = {},
+                                readOnly = true,
+                                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = languageDropdownExpanded) },
+                                modifier = Modifier.fillMaxWidth().menuAnchor(),
+                                colors = textFieldColors
+                            )
+                            ExposedDropdownMenu(
+                                expanded = languageDropdownExpanded,
+                                onDismissRequest = { languageDropdownExpanded = false }
+                            ) {
+                                PERSONA_LANGUAGES.forEach { (code, label) ->
+                                    DropdownMenuItem(
+                                        text = { Text(label) },
+                                        onClick = {
+                                            editedLanguage = code
+                                            languageDropdownExpanded = false
+                                        }
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -427,10 +499,11 @@ fun EditPersonaScreen(
                             viewModel.updatePersonaName(personaId, editedName.trim())
                         }
                         val genderStr = if (editedIsMale) "male" else "female"
-                        val profileChanged = editedDescription != d.originalDescription || editedAge != d.age || genderStr != d.gender
+                        val languageChanged = editedLanguage != d.language
+                        val profileChanged = editedDescription != d.originalDescription || editedAge != d.age || genderStr != d.gender || languageChanged
                         if (editedDescription.isNotBlank() && profileChanged) {
                             isSavingProfile = true
-                            viewModel.updateProfile(personaId, editedDescription.trim(), editedAge, genderStr) {
+                            viewModel.updateProfile(personaId, editedDescription.trim(), editedAge, genderStr, editedLanguage) {
                                 isSavingProfile = false
                                 viewModel.selectPersona(personaId)
                                 onBack()

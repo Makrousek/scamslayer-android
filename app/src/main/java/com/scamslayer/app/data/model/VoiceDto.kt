@@ -20,7 +20,8 @@ data class CustomPersonaDetail(
     @SerializedName("gender") val gender: String = "male",
     @SerializedName("original_description") val originalDescription: String = "",
     @SerializedName("system_prompt") val systemPrompt: String = "",
-    @SerializedName("is_custom") val isCustom: Boolean = true
+    @SerializedName("is_custom") val isCustom: Boolean = true,
+    @SerializedName("language") val language: String = "cs"
 )
 
 data class GeneratePersonaResponse(

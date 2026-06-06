@@ -89,58 +89,6 @@ fun SettingsScreen(viewModel: MainViewModel) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Language selector
-        val currentLang by viewModel.personaLanguage.collectAsState()
-        val languages = listOf("" to "Auto", "cs" to "Čeština", "en" to "English")
-        val displayLang = languages.find { it.first == currentLang }?.second ?: "Auto"
-        var langExpanded by remember { mutableStateOf(false) }
-
-        SectionHeader(icon = Icons.Default.Info, title = L.s.languageLabel)
-        Spacer(modifier = Modifier.height(8.dp))
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-        ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Box {
-                    Button(
-                        onClick = { langExpanded = true },
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
-                        shape = RoundedCornerShape(8.dp),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(
-                            text = displayLang,
-                            color = MaterialTheme.colorScheme.onSurface,
-                            modifier = Modifier.weight(1f)
-                        )
-                        Icon(
-                            imageVector = Icons.Default.Info,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                    DropdownMenu(
-                        expanded = langExpanded,
-                        onDismissRequest = { langExpanded = false }
-                    ) {
-                        languages.forEach { (code, label) ->
-                            DropdownMenuItem(
-                                text = { Text(label) },
-                                onClick = {
-                                    viewModel.setPersonaLanguage(code)
-                                    langExpanded = false
-                                }
-                            )
-                        }
-                    }
-                }
-            }
-        }
-
-        Spacer(modifier = Modifier.height(20.dp))
-
         SectionHeader(icon = Icons.Default.PhoneInTalk, title = L.s.howItWorks)
         Spacer(modifier = Modifier.height(8.dp))
         Card(

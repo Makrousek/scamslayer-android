@@ -621,6 +621,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         description: String,
         age: Int,
         gender: String,
+        language: String = "",
         onSuccess: (GeneratePersonaResponse) -> Unit,
         onError: (String) -> Unit
     ) {
@@ -629,7 +630,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             try {
                 val url = settingsRepository.getBackendUrlSync()
                 val userNumber = settingsRepository.getUserPhoneNumberSync()
-                val lang = _personaLanguage.value.ifEmpty { java.util.Locale.getDefault().language }
+                val lang = language.ifEmpty { _personaLanguage.value.ifEmpty { java.util.Locale.getDefault().language } }
                 val result = ApiClient.getService(url).generatePersona(
                     mapOf(
                         "description" to description,
@@ -705,12 +706,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun updateProfile(personaId: String, description: String, age: Int, gender: String = "", onDone: (PersonaDto?) -> Unit) {
+    fun updateProfile(personaId: String, description: String, age: Int, gender: String = "", language: String = "", onDone: (PersonaDto?) -> Unit) {
         viewModelScope.launch {
             try {
                 val url = settingsRepository.getBackendUrlSync()
                 val request = mutableMapOf<String, Any>("description" to description, "age" to age)
                 if (gender.isNotBlank()) request["gender"] = gender
+                if (language.isNotBlank()) request["language"] = language
                 val updated = ApiClient.getService(url).updateProfile(personaId, request)
                 loadPersonas()
                 onDone(updated)
