@@ -2,6 +2,7 @@ package com.scamslayer.app.ui.screens
 import com.scamslayer.app.ui.L
 
 import androidx.compose.foundation.Image
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -257,6 +258,54 @@ fun HomeScreen(
             }
         }
 
+        // Usage / Premium card (hidden for premium users)
+        val isPremium by viewModel.isPremium.collectAsState()
+        val callsUsed by viewModel.callsUsed.collectAsState()
+        val callsLimit by viewModel.callsLimit.collectAsState()
+        var showPremiumSheet by remember { mutableStateOf(false) }
+
+        if (!isPremium) {
+            Spacer(modifier = Modifier.height(16.dp))
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = "${L.s.callsThisMonth}: $callsUsed / $callsLimit",
+                            style = MaterialTheme.typography.titleSmall,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Text(
+                            text = L.s.unlimitedCalls,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    Button(
+                        onClick = { showPremiumSheet = true },
+                        colors = ButtonDefaults.buttonColors(containerColor = ScamOrange),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Text(L.s.premium)
+                    }
+                }
+            }
+        }
+
+        if (showPremiumSheet) {
+            PremiumDialog(
+                viewModel = viewModel,
+                onDismiss = { showPremiumSheet = false }
+            )
+        }
+
         Spacer(modifier = Modifier.height(24.dp))
 
         // Persona Selector
@@ -369,6 +418,101 @@ fun HomeScreen(
                 }
             },
             containerColor = MaterialTheme.colorScheme.surface
+        )
+    }
+}
+
+
+@Composable
+fun PremiumDialog(
+    viewModel: MainViewModel,
+    onDismiss: () -> Unit
+) {
+    val activity = LocalContext.current as? android.app.Activity
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+                Icon(
+                    imageVector = Icons.Default.Shield,
+                    contentDescription = null,
+                    tint = ScamOrange,
+                    modifier = Modifier.size(48.dp)
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "ScamSlayer Premium",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+        },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                FeatureRow(Icons.Default.Call, L.s.premiumFeature1)
+                FeatureRow(Icons.Default.Person, L.s.premiumFeature2)
+                FeatureRow(Icons.Default.Shield, L.s.premiumFeature3)
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                val price = viewModel.billingManager.getFormattedPrice()
+                if (price != null) {
+                    Text(
+                        text = "$price / ${if (L.s.lang == "cs") "měsíc" else "month"}",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                    )
+                }
+
+                Text(
+                    text = L.s.freeDesc,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    activity?.let { viewModel.billingManager.launchPurchase(it) }
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = ScamRed),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Text(L.s.subscribe)
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(L.s.cancel, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+        },
+        containerColor = MaterialTheme.colorScheme.surface
+    )
+}
+
+
+@Composable
+private fun FeatureRow(icon: androidx.compose.ui.graphics.vector.ImageVector, text: String) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = ScamOrange,
+            modifier = Modifier.size(20.dp)
+        )
+        Spacer(modifier = Modifier.width(12.dp))
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurface
         )
     }
 }
