@@ -110,7 +110,7 @@ fun PersonaCard(
                 )
             } else {
                 Surface(
-                    modifier = Modifier.size(56.dp),
+                    modifier = portraitModifier,
                     shape = CircleShape,
                     color = if (isSelected) ScamRed else ScamOrange.copy(alpha = 0.2f)
                 ) {

@@ -23,6 +23,17 @@ interface ApiService {
     @GET("/api/config/twilio-number")
     suspend fun getTwilioNumber(@Query("user_number") userNumber: String): Map<String, String>
 
+    @GET("/api/personas/equivalent")
+    suspend fun getEquivalentPersona(
+        @Query("persona_id") personaId: String,
+        @Query("language") language: String,
+        @Query("app") app: String = "scamslayer",
+        @Query("user_number") userNumber: String = ""
+    ): Map<String, Any?>
+
+    @GET("/api/config/language-for-phone")
+    suspend fun getLanguageForPhone(@Query("user_number") userNumber: String): Map<String, Any>
+
     @GET("/api/recordings")
     suspend fun getRecordings(@Query("user_number") userNumber: String = ""): List<RecordingDto>
 
@@ -80,6 +91,13 @@ interface ApiService {
 
     @POST("/api/personas/custom/{id}/system-prompt")
     suspend fun updateSystemPrompt(@Path("id") id: String, @Body request: Map<String, String>)
+
+    // Subscription
+    @GET("/api/subscription/status")
+    suspend fun getSubscriptionStatus(@Query("user_number") userNumber: String, @Query("app") app: String = "scamslayer"): Map<String, @JvmSuppressWildcards Any>
+
+    @POST("/api/subscription/verify")
+    suspend fun verifyPurchase(@Body request: Map<String, String>): Map<String, @JvmSuppressWildcards Any>
 
     // Promo codes
     @POST("/api/promo/validate")

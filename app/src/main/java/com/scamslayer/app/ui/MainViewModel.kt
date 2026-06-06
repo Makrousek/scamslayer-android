@@ -14,6 +14,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.messaging.FirebaseMessaging
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import com.scamslayer.app.data.BillingManager
 import com.scamslayer.app.data.SettingsRepository
 import com.scamslayer.app.data.api.ApiClient
 import com.scamslayer.app.data.model.CustomPersonaDetail
@@ -57,16 +58,29 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val backendUrl: StateFlow<String> = settingsRepository.backendUrl
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "http://10.0.2.2:8000")
 
+    // UI language (controls L.kt translations)
     private val _personaLanguage = MutableStateFlow(
         application.getSharedPreferences("scamslayer", 0).getString("persona_language", "") ?: ""
     )
     val personaLanguage: StateFlow<String> = _personaLanguage
+
+    // Persona filter language (detected from phone number, controls which default personas are shown)
+    private val _personaFilterLanguage = MutableStateFlow(
+        application.getSharedPreferences("scamslayer", 0).getString("persona_filter_language", "") ?: ""
+    )
 
     fun setPersonaLanguage(lang: String) {
         _personaLanguage.value = lang
         L.setLanguage(lang)
         getApplication<Application>().getSharedPreferences("scamslayer", 0)
             .edit().putString("persona_language", lang).apply()
+        // Only change UI language, don't reload personas
+    }
+
+    fun setPersonaFilterLanguage(lang: String) {
+        _personaFilterLanguage.value = lang
+        getApplication<Application>().getSharedPreferences("scamslayer", 0)
+            .edit().putString("persona_filter_language", lang).apply()
         loadPersonas()
     }
 
@@ -85,8 +99,24 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _isPremium = MutableStateFlow(false)
     val isPremium: StateFlow<Boolean> = _isPremium.asStateFlow()
 
+    private val _callsUsed = MutableStateFlow(0)
+    val callsUsed: StateFlow<Int> = _callsUsed.asStateFlow()
+    private val _callsLimit = MutableStateFlow(2)
+    val callsLimit: StateFlow<Int> = _callsLimit.asStateFlow()
+
+    val billingManager = BillingManager(application)
+
     init {
         L.setLanguage(_personaLanguage.value)
+        billingManager.connect()
+        // Observe purchase completions
+        viewModelScope.launch {
+            billingManager.purchaseComplete.collect { token ->
+                if (token != null) {
+                    verifyPurchase(token)
+                }
+            }
+        }
         checkSetup()
     }
 
@@ -96,6 +126,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             _isSetupComplete.value = phone.isNotBlank()
             if (phone.isNotBlank()) {
                 fetchTwilioNumber(phone)
+                if (_personaFilterLanguage.value.isEmpty()) {
+                    detectLanguageFromPhone(phone)
+                }
                 loadPersonas()
                 loadRecordings()
                 registerFcmToken()
@@ -110,10 +143,50 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             settingsRepository.setUserPhoneNumber(phoneNumber)
             _isSetupComplete.value = true
             fetchTwilioNumber(phoneNumber)
+            detectLanguageFromPhone(phoneNumber)
             loadPersonas()
             loadRecordings()
             registerFcmToken()
             checkForwardingStatus()
+        }
+    }
+
+    fun switchPersonaLanguage(personaId: String, newLanguage: String, onResult: (String?) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val url = settingsRepository.getBackendUrlSync()
+                val userNumber = settingsRepository.getUserPhoneNumberSync()
+                val resp = ApiClient.getService(url).getEquivalentPersona(personaId, newLanguage, userNumber = userNumber)
+                val newId = resp["id"] as? String
+                if (newId != null) {
+                    selectPersona(newId)
+                    // Reload personas to reflect the change immediately
+                    val lang = _personaFilterLanguage.value.ifEmpty { java.util.Locale.getDefault().language }
+                    try {
+                        val personas = ApiClient.getService(url).getPersonas(userNumber = userNumber, language = lang)
+                        _uiState.value = _uiState.value.copy(personas = personas, isLoadingPersonas = false)
+                    } catch (_: Exception) {}
+                    onResult(newId)
+                } else {
+                    onResult(null)
+                }
+            } catch (e: Exception) {
+                Log.w("MainViewModel", "Failed to switch persona language: ${e.message}")
+                onResult(null)
+            }
+        }
+    }
+
+    private fun detectLanguageFromPhone(phoneNumber: String) {
+        viewModelScope.launch {
+            try {
+                val url = settingsRepository.getBackendUrlSync()
+                val resp = ApiClient.getService(url).getLanguageForPhone(phoneNumber)
+                val lang = (resp["language"] as? String) ?: "en"
+                setPersonaFilterLanguage(lang)
+            } catch (e: Exception) {
+                Log.w("MainViewModel", "Failed to detect language from phone: ${e.message}")
+            }
         }
     }
 
@@ -185,10 +258,36 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             try {
                 val url = settingsRepository.getBackendUrlSync()
                 val userNumber = settingsRepository.getUserPhoneNumberSync()
-                val result = ApiClient.getService(url).getPromoStatus(userNumber)
-                _isPremium.value = result["premium"] == true
+                // Check subscription status (includes promo, free premium, and subscription)
+                val status = ApiClient.getService(url).getSubscriptionStatus(userNumber, app = "scamslayer")
+                _isPremium.value = status["premium"] == true
+                _callsUsed.value = (status["calls_used"] as? Double)?.toInt() ?: 0
+                _callsLimit.value = (status["calls_limit"] as? Double)?.toInt() ?: 2
             } catch (e: Exception) {
                 Log.w("MainViewModel", "Failed to check premium: ${e.message}")
+                // Fallback: check promo
+                try {
+                    val url = settingsRepository.getBackendUrlSync()
+                    val userNumber = settingsRepository.getUserPhoneNumberSync()
+                    val result = ApiClient.getService(url).getPromoStatus(userNumber)
+                    _isPremium.value = result["premium"] == true
+                } catch (_: Exception) {}
+            }
+        }
+    }
+
+    fun verifyPurchase(purchaseToken: String) {
+        viewModelScope.launch {
+            try {
+                val url = settingsRepository.getBackendUrlSync()
+                val userNumber = settingsRepository.getUserPhoneNumberSync()
+                ApiClient.getService(url).verifyPurchase(
+                    mapOf("user_number" to userNumber, "purchase_token" to purchaseToken, "app" to "scamslayer")
+                )
+                _isPremium.value = true
+                checkPremiumStatus()
+            } catch (e: Exception) {
+                Log.w("MainViewModel", "Failed to verify purchase: ${e.message}")
             }
         }
     }
@@ -281,7 +380,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             try {
                 val url = settingsRepository.getBackendUrlSync()
                 val userNumber = settingsRepository.getUserPhoneNumberSync()
-                val lang = _personaLanguage.value.ifEmpty {
+                val lang = _personaFilterLanguage.value.ifEmpty {
                     java.util.Locale.getDefault().language  // "cs", "en", etc.
                 }
                 val personas = ApiClient.getService(url).getPersonas(userNumber = userNumber, language = lang)

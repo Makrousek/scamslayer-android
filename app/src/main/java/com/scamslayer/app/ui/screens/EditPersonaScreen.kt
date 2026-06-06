@@ -159,8 +159,10 @@ fun EditPersonaScreen(
                     portraitUrl = persona.portraitUrl,
                     voiceId = "",
                     voiceSettings = emptyMap(),
-                    isCustom = false
+                    isCustom = false,
+                    language = persona.language
                 )
+                editedLanguage = persona.language
             } else {
                 error = "Persona nenalezena"
             }
@@ -337,6 +339,61 @@ fun EditPersonaScreen(
                     }
                 }
 
+                // Language dropdown (for ALL personas, including system)
+                Spacer(modifier = Modifier.height(16.dp))
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = L.s.personaLanguage,
+                            style = MaterialTheme.typography.titleSmall,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        @OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
+                        ExposedDropdownMenuBox(
+                            expanded = languageDropdownExpanded,
+                            onExpandedChange = { languageDropdownExpanded = it }
+                        ) {
+                            OutlinedTextField(
+                                value = PERSONA_LANGUAGES.firstOrNull { it.first == editedLanguage }?.second ?: editedLanguage,
+                                onValueChange = {},
+                                readOnly = true,
+                                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = languageDropdownExpanded) },
+                                modifier = Modifier.fillMaxWidth().menuAnchor(),
+                                colors = textFieldColors
+                            )
+                            ExposedDropdownMenu(
+                                expanded = languageDropdownExpanded,
+                                onDismissRequest = { languageDropdownExpanded = false }
+                            ) {
+                                PERSONA_LANGUAGES.forEach { (code, label) ->
+                                    DropdownMenuItem(
+                                        text = { Text(label) },
+                                        onClick = {
+                                            if (!isCustom && code != editedLanguage) {
+                                                // For system personas: switch to equivalent in new language
+                                                isSavingProfile = true
+                                                viewModel.switchPersonaLanguage(personaId, code) { newId ->
+                                                    isSavingProfile = false
+                                                    if (newId != null) {
+                                                        onBack()
+                                                    }
+                                                }
+                                            }
+                                            editedLanguage = code
+                                            languageDropdownExpanded = false
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+
                 if (isCustom) {
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -404,43 +461,6 @@ fun EditPersonaScreen(
                             }
                         }
 
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        // Language dropdown
-                        Text(
-                            text = L.s.personaLanguage,
-                            style = MaterialTheme.typography.titleSmall,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        @OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
-                        ExposedDropdownMenuBox(
-                            expanded = languageDropdownExpanded,
-                            onExpandedChange = { languageDropdownExpanded = it }
-                        ) {
-                            OutlinedTextField(
-                                value = PERSONA_LANGUAGES.firstOrNull { it.first == editedLanguage }?.second ?: editedLanguage,
-                                onValueChange = {},
-                                readOnly = true,
-                                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = languageDropdownExpanded) },
-                                modifier = Modifier.fillMaxWidth().menuAnchor(),
-                                colors = textFieldColors
-                            )
-                            ExposedDropdownMenu(
-                                expanded = languageDropdownExpanded,
-                                onDismissRequest = { languageDropdownExpanded = false }
-                            ) {
-                                PERSONA_LANGUAGES.forEach { (code, label) ->
-                                    DropdownMenuItem(
-                                        text = { Text(label) },
-                                        onClick = {
-                                            editedLanguage = code
-                                            languageDropdownExpanded = false
-                                        }
-                                    )
-                                }
-                            }
-                        }
                     }
                 }
 

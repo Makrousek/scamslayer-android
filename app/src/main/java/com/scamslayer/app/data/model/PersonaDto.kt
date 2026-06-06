@@ -7,5 +7,6 @@ data class PersonaDto(
     @SerializedName("name") val name: String,
     @SerializedName("description") val description: String,
     @SerializedName("is_custom") val isCustom: Boolean = false,
-    @SerializedName("portrait_url") val portraitUrl: String? = null
+    @SerializedName("portrait_url") val portraitUrl: String? = null,
+    @SerializedName("language") val language: String = "cs"
 )
