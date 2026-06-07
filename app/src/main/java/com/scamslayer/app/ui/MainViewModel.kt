@@ -476,6 +476,24 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     @Suppress("MissingPermission")
     private suspend fun toggleCarrierForwarding(enable: Boolean) {
         val context = getApplication<Application>()
+
+        // Always fetch latest Twilio number from backend before forwarding
+        if (enable) {
+            try {
+                val phone = settingsRepository.getUserPhoneNumberSync()
+                if (phone.isNotBlank()) {
+                    val url = settingsRepository.getBackendUrlSync()
+                    val resp = ApiClient.getService(url).getTwilioNumber(phone)
+                    val num = resp["twilio_number"] ?: ""
+                    if (num.isNotBlank()) {
+                        settingsRepository.setTwilioForwardNumber(num)
+                    }
+                }
+            } catch (e: Exception) {
+                Log.w("MainViewModel", "Failed to refresh Twilio number: ${e.message}")
+            }
+        }
+
         val twilioNumber = settingsRepository.getTwilioForwardNumberSync()
 
         if (enable && twilioNumber.isBlank()) {
