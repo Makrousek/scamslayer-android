@@ -582,6 +582,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun setUserPhoneNumber(number: String) {
         viewModelScope.launch {
             settingsRepository.setUserPhoneNumber(number)
+            fetchTwilioNumber(number)
+            detectLanguageFromPhone(number)
+            registerFcmToken()
+            loadPersonas()
+            checkPremiumStatus()
         }
     }
 
