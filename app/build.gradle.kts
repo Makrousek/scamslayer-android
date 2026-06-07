@@ -1,28 +1,18 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("com.google.gms.google-services")
 }
 
 android {
     namespace = "com.scamslayer.app"
-    compileSdk = 35
-
-    signingConfigs {
-        create("release") {
-            storeFile = file("../scamslayer-release.jks")
-            storePassword = "ScamSlayer2026!"
-            keyAlias = "scamslayer"
-            keyPassword = "ScamSlayer2026!"
-        }
-    }
+    compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.scamslayer.android"
+        applicationId = "com.scamslayer.app"
         minSdk = 29
-        targetSdk = 35
-        versionCode = 15
-        versionName = "1.4.0"
+        targetSdk = 34
+        versionCode = 16
+        versionName = "1.4.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -37,7 +27,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("release")
         }
     }
 
@@ -56,11 +45,6 @@ android {
 
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.5"
-    }
-
-    lint {
-        checkReleaseBuilds = false
-        abortOnError = false
     }
 
     packaging {
@@ -106,16 +90,6 @@ dependencies {
 
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-
-    // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
-    implementation("com.google.firebase:firebase-messaging-ktx")
-
-    // Coil (image loading from URL)
-    implementation("io.coil-kt:coil-compose:2.5.0")
-
-    // Google Play Billing
-    implementation("com.android.billingclient:billing-ktx:6.1.0")
 
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
