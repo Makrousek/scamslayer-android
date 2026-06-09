@@ -30,6 +30,7 @@ class BillingManager(private val context: Context) : PurchasesUpdatedListener {
                 if (result.responseCode == BillingClient.BillingResponseCode.OK) {
                     Log.i(TAG, "Billing connected")
                     queryProduct()
+                    restorePurchases()
                 } else {
                     Log.w(TAG, "Billing setup failed: ${result.debugMessage}")
                 }
@@ -109,6 +110,34 @@ class BillingManager(private val context: Context) : PurchasesUpdatedListener {
             .build()
         billingClient.acknowledgePurchase(params) { result ->
             Log.i(TAG, "Acknowledge result: ${result.responseCode}")
+        }
+    }
+
+    private val _hasActiveSubscription = MutableStateFlow(false)
+    val hasActiveSubscription: StateFlow<Boolean> = _hasActiveSubscription
+
+    private fun restorePurchases() {
+        billingClient.queryPurchasesAsync(
+            QueryPurchasesParams.newBuilder()
+                .setProductType(BillingClient.ProductType.SUBS)
+                .build()
+        ) { result, purchases ->
+            if (result.responseCode == BillingClient.BillingResponseCode.OK) {
+                val active = purchases.any { purchase ->
+                    purchase.products.contains(PREMIUM_PRODUCT_ID) &&
+                    purchase.purchaseState == Purchase.PurchaseState.PURCHASED
+                }
+                _hasActiveSubscription.value = active
+                if (active) {
+                    val token = purchases.first { it.products.contains(PREMIUM_PRODUCT_ID) }?.purchaseToken
+                    if (token != null) {
+                        _purchaseComplete.value = token
+                    }
+                }
+                Log.i(TAG, "Restore: ${purchases.size} subscriptions, active=$active")
+            } else {
+                Log.w(TAG, "Restore failed: ${result.debugMessage}")
+            }
         }
     }
 
