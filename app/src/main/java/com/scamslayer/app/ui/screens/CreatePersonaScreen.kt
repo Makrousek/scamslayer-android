@@ -60,6 +60,7 @@ import com.scamslayer.app.ui.theme.ScamRed
 private val PERSONA_LANGUAGES = listOf(
     "cs" to "Čeština",
     "en" to "English",
+    "en-GB" to "English (British)",
     "en-IN" to "English (Indian)",
     "en-CN" to "English (Chinese)",
     "de" to "Deutsch",
