@@ -148,6 +148,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             loadRecordings()
             registerFcmToken()
             checkForwardingStatus()
+            checkPremiumStatus()
         }
     }
 
@@ -258,6 +259,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             try {
                 val url = settingsRepository.getBackendUrlSync()
                 val userNumber = settingsRepository.getUserPhoneNumberSync()
+                if (userNumber.isBlank()) return@launch
                 // Check subscription status (includes promo, free premium, and subscription)
                 val status = ApiClient.getService(url).getSubscriptionStatus(userNumber, app = "scamslayer")
                 _isPremium.value = status["premium"] == true
@@ -281,6 +283,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             try {
                 val url = settingsRepository.getBackendUrlSync()
                 val userNumber = settingsRepository.getUserPhoneNumberSync()
+                if (userNumber.isBlank()) return@launch
                 ApiClient.getService(url).verifyPurchase(
                     mapOf("user_number" to userNumber, "purchase_token" to purchaseToken, "app" to "scamslayer")
                 )
