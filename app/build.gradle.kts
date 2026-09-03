@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.scamslayer.app"
-    compileSdk = 35
+    compileSdk = 36
 
     signingConfigs {
         create("release") {
@@ -20,9 +20,9 @@ android {
     defaultConfig {
         applicationId = "com.scamslayer.android"
         minSdk = 29
-        targetSdk = 35
-        versionCode = 20
-        versionName = "1.4.5"
+        targetSdk = 36
+        versionCode = 21
+        versionName = "1.5.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -55,7 +55,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.5"
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
 
     lint {
@@ -115,7 +115,7 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.5.0")
 
     // Google Play Billing
-    implementation("com.android.billingclient:billing-ktx:6.1.0")
+    implementation("com.android.billingclient:billing-ktx:7.1.1")
 
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")

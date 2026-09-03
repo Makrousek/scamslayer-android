@@ -19,7 +19,12 @@ class BillingManager(private val context: Context) : PurchasesUpdatedListener {
 
     private val billingClient = BillingClient.newBuilder(context)
         .setListener(this)
-        .enablePendingPurchases()
+        .enablePendingPurchases(
+            PendingPurchasesParams.newBuilder()
+                .enableOneTimeProducts()
+                .enablePrepaidPlans()
+                .build()
+        )
         .build()
 
     private var productDetails: ProductDetails? = null
