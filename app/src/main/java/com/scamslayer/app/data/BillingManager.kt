@@ -59,12 +59,13 @@ class BillingManager(private val context: Context) : PurchasesUpdatedListener {
             )
             .build()
 
-        billingClient.queryProductDetailsAsync(params) { result, products ->
-            if (result.responseCode == BillingClient.BillingResponseCode.OK && products.isNotEmpty()) {
+        billingClient.queryProductDetailsAsync(params) { billingResult, productDetailsResult ->
+            val products = productDetailsResult.productDetailsList
+            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && products.isNotEmpty()) {
                 productDetails = products[0]
                 Log.i(TAG, "Product found: ${products[0].name}")
             } else {
-                Log.w(TAG, "No products found: ${result.debugMessage}")
+                Log.w(TAG, "No products found: ${billingResult.debugMessage}")
             }
         }
     }
@@ -126,22 +127,22 @@ class BillingManager(private val context: Context) : PurchasesUpdatedListener {
             QueryPurchasesParams.newBuilder()
                 .setProductType(BillingClient.ProductType.SUBS)
                 .build()
-        ) { result, purchases ->
-            if (result.responseCode == BillingClient.BillingResponseCode.OK) {
+        ) { billingResult, purchases ->
+            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                 val active = purchases.any { purchase ->
                     purchase.products.contains(PREMIUM_PRODUCT_ID) &&
                     purchase.purchaseState == Purchase.PurchaseState.PURCHASED
                 }
                 _hasActiveSubscription.value = active
                 if (active) {
-                    val token = purchases.first { it.products.contains(PREMIUM_PRODUCT_ID) }?.purchaseToken
-                    if (token != null) {
-                        _purchaseComplete.value = token
+                    val found = purchases.firstOrNull { p -> p.products.contains(PREMIUM_PRODUCT_ID) }
+                    if (found != null) {
+                        _purchaseComplete.value = found.purchaseToken
                     }
                 }
                 Log.i(TAG, "Restore: ${purchases.size} subscriptions, active=$active")
             } else {
-                Log.w(TAG, "Restore failed: ${result.debugMessage}")
+                Log.w(TAG, "Restore failed: ${billingResult.debugMessage}")
             }
         }
     }

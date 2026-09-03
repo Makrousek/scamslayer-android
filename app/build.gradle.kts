@@ -21,8 +21,8 @@ android {
         applicationId = "com.scamslayer.android"
         minSdk = 29
         targetSdk = 36
-        versionCode = 21
-        versionName = "1.5.0"
+        versionCode = 22
+        versionName = "1.5.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -115,7 +115,7 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.5.0")
 
     // Google Play Billing
-    implementation("com.android.billingclient:billing-ktx:7.1.1")
+    implementation("com.android.billingclient:billing:8.0.0")
 
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
