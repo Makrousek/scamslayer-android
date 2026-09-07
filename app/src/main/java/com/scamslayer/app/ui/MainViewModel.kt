@@ -391,6 +391,17 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     personas = personas,
                     isLoadingPersonas = false
                 )
+                // Auto-select grandpa/deda as default persona if none selected
+                val currentId = settingsRepository.getSelectedPersonaIdSync()
+                if (currentId.isBlank() && personas.isNotEmpty()) {
+                    val grandpa = personas.find { it.id == "deda_frantisek" }
+                        ?: personas.find { it.id.startsWith("grandpa_") }
+                    if (grandpa != null) {
+                        selectPersona(grandpa.id)
+                    } else {
+                        selectPersona(personas.first().id)
+                    }
+                }
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     isLoadingPersonas = false,

@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Person
@@ -38,7 +39,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -70,7 +71,7 @@ fun RecordingItem(
     portraitUrl: String? = null,
     modifier: Modifier = Modifier
 ) {
-    var isExpanded by remember { mutableStateOf(false) }
+    var isExpanded by rememberSaveable { mutableStateOf(false) }
 
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -156,6 +157,31 @@ fun RecordingItem(
                     }
                 }
 
+                // Always-visible share buttons
+                IconButton(
+                    onClick = onShareAudio,
+                    modifier = Modifier.size(32.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Share,
+                        contentDescription = L.s.shareAudio,
+                        modifier = Modifier.size(18.dp),
+                        tint = ScamOrange
+                    )
+                }
+                if (!recording.transcript.isNullOrBlank()) {
+                    IconButton(
+                        onClick = onShareTranscript,
+                        modifier = Modifier.size(32.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Description,
+                            contentDescription = L.s.shareTranscript,
+                            modifier = Modifier.size(18.dp),
+                            tint = ScamOrange
+                        )
+                    }
+                }
                 IconButton(
                     onClick = { isExpanded = !isExpanded },
                     modifier = Modifier.size(32.dp)
@@ -230,7 +256,7 @@ fun RecordingItem(
                             Spacer(modifier = Modifier.width(8.dp))
                             TextButton(onClick = onShareTranscript) {
                                 Icon(
-                                    imageVector = Icons.Default.Share,
+                                    imageVector = Icons.Default.Description,
                                     contentDescription = null,
                                     modifier = Modifier.size(16.dp),
                                     tint = ScamOrange
