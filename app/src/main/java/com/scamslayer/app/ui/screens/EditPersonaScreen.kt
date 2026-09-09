@@ -89,6 +89,9 @@ private val PERSONA_LANGUAGES = listOf(
     "hi" to "हिन्दी",
     "tr" to "Türkçe",
     "vi" to "Tiếng Việt",
+    "lv" to "Latviešu",
+    "lt" to "Lietuvių",
+    "et" to "Eesti",
 )
 
 @Composable
