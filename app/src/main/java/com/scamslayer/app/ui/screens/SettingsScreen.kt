@@ -100,7 +100,6 @@ fun SettingsScreen(viewModel: MainViewModel) {
             "no" to "Norsk", "fi" to "Suomi", "ja" to "日本語",
             "ko" to "한국어", "zh" to "中文", "ar" to "العربية",
             "hi" to "हिन्दी", "tr" to "Türkçe", "vi" to "Tiếng Việt",
-            "lv" to "Latviešu", "lt" to "Lietuvių", "et" to "Eesti",
         )
         val displayLang = languages.find { it.first == currentLang }?.second ?: "Auto"
         var langExpanded by remember { mutableStateOf(false) }

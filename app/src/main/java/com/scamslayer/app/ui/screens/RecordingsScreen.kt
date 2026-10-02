@@ -176,9 +176,11 @@ fun RecordingsScreen(viewModel: MainViewModel) {
                         RecordingItem(
                             recording = recording,
                             audioUrl = viewModel.getAudioUrl(recording.id),
-                            portraitUrl = if (recording.persona.startsWith("custom_")) {
+                            portraitUrl = if (recording.persona in listOf("babicka_bozena", "deda_frantisek", "mlada_tereza", "it_honza")) {
+                                null
+                            } else {
                                 viewModel.getFullUrl("/api/personas/custom/${recording.persona}/portrait")
-                            } else null,
+                            },
                             onDelete = {
                                 recordingToDelete = recording.id
                             },

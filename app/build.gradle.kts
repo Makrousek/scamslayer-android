@@ -21,8 +21,8 @@ android {
         applicationId = "com.scamslayer.android"
         minSdk = 29
         targetSdk = 36
-        versionCode = 24
-        versionName = "1.5.3"
+        versionCode = 26
+        versionName = "1.5.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
